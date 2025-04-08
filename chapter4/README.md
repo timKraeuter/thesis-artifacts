@@ -5,7 +5,7 @@
 ### MontiArc
 
 
-Sources to execute the implementation of the running example can be found in `/related-work/montiarc-develop.zip`, which is a fork of [MontiArc](https://github.com/MontiCore/montiarc) including the running example.
+Sources to execute the implementation of the running example can be found in `/related-work/montiarc-develop.zip`, a fork of [MontiArc](https://github.com/MontiCore/montiarc) that includes the running example.
 The example is implemented in `/applications/crossing` alongside the other running examples described [online](https://github.com/MontiCore/montiarc).
 The components in the example are the following:
 #### Crossing
@@ -122,4 +122,4 @@ end operator
 ```
 
 Unfortunately, we cannot provide an executable to test the specification.
-However, it is very similar to the examples discussed in the B-COoL literature.
+However, it is similar to the examples discussed in the B-COoL literature.

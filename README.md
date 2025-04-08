@@ -1,8 +1,10 @@
 The artifacts for the thesis's different chapters (if any) can be found here.
 
 # Thesis artifacts:
+- See [chapter 1](./chapter1/README.md).
 - See [chapter 2](./chapter2/README.md).
 - See [chapter 3](./chapter3/README.md).
+- See [chapter 4](./chapter4/README.md).
 
 # Paper artifacts
 Artifacts for each paper are linked in the respective paper, and an overview is given below:
