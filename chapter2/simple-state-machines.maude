@@ -1,0 +1,70 @@
+load model-checker.maude .
+
+fmod STATE-MACHINE is
+  pr STRING .
+  sorts State Transition .
+  op state : String -> State [ctor] .
+  op _->_ : State State -> Transition [ctor] .
+endfm
+
+view Transition from TRIV to STATE-MACHINE is
+  sort Elt to Transition .
+endv
+
+omod STATE-MACHINE-EX is
+  pr STATE-MACHINE .
+  pr SET{Transition} .
+
+  class StateMachine | transitions : Set{Transition} .
+  class StateMachineInstance | sm : Oid, currentState : State .
+
+  vars SMId SMIId : Oid .
+  var Transitions : Set{Transition} .
+  var From To : State .
+
+  rl [fire-transition] :
+      < SMId : StateMachine |
+        transitions : (From -> To, Transitions) >
+      < SMIId : StateMachineInstance | sm : SMId,
+        currentState : From >
+   =>
+      < SMId : StateMachine | >
+      < SMIId : StateMachineInstance | sm : SMId,
+        currentState : To > .
+endom
+
+mod PREDICATES is
+  pr STATE-MACHINE-EX .
+  pr SATISFACTION .
+
+  --- States are Configuration (multi-set of objects)
+  subsort Configuration < State .
+
+  --- Simple State Machine Proposition
+  op is-in-state-X : -> Prop .
+  var C : Configuration . --- Any other objects: <...> ...
+  var Id MId : Oid .
+  eq < Id : StateMachineInstance | sm : MId, currentState : state("X") > C |= is-in-state-X = true .
+endm
+
+mod MODEL-CHECK is
+    pr PREDICATES .
+    pr MODEL-CHECKER .
+    pr LTL-SIMPLIFIER .
+
+    subsort String < Oid .
+
+    op stateMachineConfiguration1 : -> Configuration .
+    eq stateMachineConfiguration1 =
+    < "model" : StateMachine | transitions : (state("A") -> state("X")) >
+    < "instance" : StateMachineInstance | sm : "model", currentState : state("A") > .
+
+    op stateMachineConfiguration2 : -> Configuration .
+    eq stateMachineConfiguration2 =
+    < "model" : StateMachine | transitions : (state("A") -> state("B")) >
+    < "instance" : StateMachineInstance | sm : "model", currentState : state("A") > .
+
+endm
+
+red modelCheck(stateMachineConfiguration1, <>(is-in-state-X)) . --- should be true
+red modelCheck(stateMachineConfiguration2, <>(is-in-state-X)) . --- should be false
